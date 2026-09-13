@@ -16,6 +16,8 @@ nav { display: flex; gap: 20px; margin: 28px 0; }
 .ok { color: #1a7f3c; font-weight: 600; }
 .error { color: #c4262e; font-weight: 600; }
 .nota { font-size: 14px; color: #7a6d70; }
+.marca-yt { display: inline-block; line-height: 0; }
+.marca-yt img { display: block; max-width: 100%; height: auto; }
 textarea {
   width: 100%; padding: 10px; font: 13px ui-monospace, Consolas, monospace;
   border: 1px solid #d8cfd1; border-radius: 8px; background: #fff; resize: vertical;
