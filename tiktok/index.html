@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Vuelta de TikTok · Publicador RubenM009</title>
+<link rel="stylesheet" href="/estilo.css">
+</head>
+<body>
+<main>
+  <p class="volver"><a href="/">← Publicador RubenM009</a></p>
+  <h1>Vuelta de TikTok</h1>
+
+  <!-- Aqui vuelve TikTok despues de autorizar, con ?code=...&state=... en la
+       direccion. La pagina NO manda nada a ningun sitio: solo enseña la
+       direccion para copiarla y pegarla en deploy/poner-tiktok.sh, que es quien
+       la canjea desde el servidor. El codigo vale una sola vez y caduca en
+       minutos. -->
+  <div id="bien" hidden>
+    <p class="ok">TikTok ha autorizado la app.</p>
+    <p>Copia esta dirección entera y pégala en el servidor, donde la pide
+    <code>poner-tiktok.sh</code>:</p>
+    <textarea id="direccion" rows="4" readonly></textarea>
+    <button id="copiar" type="button">Copiar</button>
+    <p class="nota">El código vale una sola vez y caduca en pocos minutos:
+    pégalo ya. Nada de esto se ha enviado a ningún sitio.</p>
+  </div>
+
+  <div id="mal" hidden>
+    <p class="error">TikTok no autorizó la app:</p>
+    <p id="motivo"></p>
+  </div>
+
+  <div id="nada">
+    <p>Esta página es a la que vuelve TikTok al autorizar la app. Si has llegado
+    sin autorizar nada, aquí no hay nada que hacer.</p>
+  </div>
+</main>
+<script>
+  const q = new URLSearchParams(location.search);
+  if (q.get('code')) {
+    document.getElementById('nada').hidden = true;
+    document.getElementById('bien').hidden = false;
+    const caja = document.getElementById('direccion');
+    caja.value = location.href;
+    document.getElementById('copiar').onclick = async () => {
+      caja.select();
+      try { await navigator.clipboard.writeText(location.href); }
+      catch (e) { document.execCommand('copy'); }
+      document.getElementById('copiar').textContent = 'Copiado';
+    };
+  } else if (q.get('error')) {
+    document.getElementById('nada').hidden = true;
+    document.getElementById('mal').hidden = false;
+    document.getElementById('motivo').textContent =
+      q.get('error_description') || q.get('error');
+  }
+</script>
+</body>
+</html>
